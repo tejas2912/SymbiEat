@@ -1,7 +1,11 @@
+// app/api/upload/route.ts
+
 import { NextResponse } from "next/server"
-import { writeFile } from "fs/promises"
+import { writeFile, mkdir } from "fs/promises"
 import path from "path"
 import { v4 as uuidv4 } from "uuid"
+import { existsSync } from "fs"
+import { uploadToS3 } from "@/lib/s3"
 
 export async function POST(request: Request) {
   try {
@@ -12,31 +16,38 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 })
     }
 
-    // Create a unique filename
     const buffer = Buffer.from(await file.arrayBuffer())
     const filename = `${uuidv4()}-${file.name.replace(/\s/g, "-")}`
 
-    // Ensure the public/uploads directory exists
-    const publicDir = path.join(process.cwd(), "public")
-    const uploadsDir = path.join(publicDir, "uploads")
+    let url
 
-    try {
-      // Create directories if they don't exist
+    if (process.env.NODE_ENV === "production") {
+      console.log("Production mode — uploading to S3...")
+      url = await uploadToS3(buffer, filename, file.type)
+      console.log("S3 URL:", url)
+    } else {
+      console.log("Development mode — saving locally...")
+      const uploadsDir = path.join(process.cwd(), "public", "uploads")
+
+      if (!existsSync(uploadsDir)) {
+        await mkdir(uploadsDir, { recursive: true })
+      }
+
       await writeFile(path.join(uploadsDir, filename), buffer)
-    } catch (error) {
-      console.error("Error writing file:", error)
-      // If directory doesn't exist, create it and try again
-      const { mkdir } = require("fs/promises")
-      await mkdir(uploadsDir, { recursive: true })
-      await writeFile(path.join(uploadsDir, filename), buffer)
+      url = `/uploads/${filename}`
+      console.log("Saved locally at:", url)
     }
 
-    // Return the URL to the uploaded file
-    const url = `/uploads/${filename}`
     return NextResponse.json({ url })
   } catch (error) {
-    console.error("Error uploading file:", error)
-    return NextResponse.json({ error: "Failed to upload file" }, { status: 500 })
+    console.error("Upload error:", error)
+    return NextResponse.json(
+      {
+        error: "Failed to upload file",
+        details: error instanceof Error ? error.message : String(error),
+      },
+      { status: 500 }
+    )
   }
 }
 

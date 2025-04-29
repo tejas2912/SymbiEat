@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@auth/core": "latest",
+    "@aws-sdk/client-s3": "^3.798.0",
+    "@aws-sdk/s3-request-presigner": "^3.798.0",
     "@emotion/is-prop-valid": "latest",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "1.2.2",
@@ -55,6 +57,7 @@
     "lucide-react": "^0.454.0",
     "mongodb": "^6.16.0",
     "mongoose": "latest",
+    "multer": "^1.4.5-lts.2",
     "next": "15.2.4",
     "next-auth": "latest",
     "next-themes": "^0.4.4",
