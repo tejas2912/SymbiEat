@@ -8,10 +8,49 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Step 2: Set up SSH key for connecting to EC2
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          # Disable SSH key checking
+          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
+      # Step 3: Deploy to EC2
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
-          script: ~/deploy.sh
+          script: |
+            #!/bin/bash
+            echo "Deploying the app to EC2"
+
+            # Step 1: Navigate to your app directory
+            cd /home/ec2-user/app/SymbiEat || exit
+
+            # Step 2: Pull the latest changes from GitHub
+            git pull origin main
+
+            # Step 3: Install dependencies
+            npm install --production
+
+            # Step 4: Build the app (if applicable, e.g., for Next.js)
+            npm run build
+
+            # Step 5: Restart or start the app using PM2
+            pm2 restart SymbiEat || pm2 start npm --name "SymbiEat" -- run start
+
+            # Step 6: Optionally, check the status of PM2
+            pm2 list
+
+            echo "Deployment to EC2 completed successfully"
+
+
+
