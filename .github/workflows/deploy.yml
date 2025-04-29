@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -14,16 +14,7 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v2
 
-      - name: Set up SSH key
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
-
-      - name: Copy files to EC2
-        run: |
-          scp -i ~/.ssh/id_rsa -r ./ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/SymbiEat
-
-      - name: Run deployment script on EC2
+      - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -33,4 +24,4 @@ jobs:
             cd /home/ec2-user/SymbiEat
             git pull origin main
             npm install
-            pm2 restart app || pm2 start app.js  # Restart if running, or start if not
+            pm2 restart app || pm2 start npm --name "app" -- run start
