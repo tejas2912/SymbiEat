@@ -1,0 +1,314 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+
+    /* Food category colors */
+    --veg: 142, 76%, 36%;
+    --nonveg: 0, 84%, 60%;
+    --beverage: 199, 89%, 48%;
+    --dessert: 330, 82%, 60%;
+
+    /* Admin panel colors */
+    --admin-primary: 262, 83%, 58%;
+    --admin-secondary: 291, 64%, 42%;
+    --admin-accent: 326, 100%, 74%;
+    --admin-background: 260, 11%, 11%;
+    --admin-card: 260, 11%, 17%;
+    --admin-text: 0, 0%, 100%;
+    --admin-muted: 260, 11%, 30%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin 8s linear infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Food emoji animation delays for variety */
+.delay-1 {
+  animation-delay: 0.5s;
+}
+
+.delay-2 {
+  animation-delay: 1s;
+}
+
+.delay-3 {
+  animation-delay: 1.5s;
+}
+
+.delay-4 {
+  animation-delay: 2s;
+}
+
+/* Admin theme */
+.admin-theme {
+  --background: var(--admin-background);
+  --foreground: var(--admin-text);
+  --card: var(--admin-card);
+  --card-foreground: var(--admin-text);
+  --popover: var(--admin-card);
+  --popover-foreground: var(--admin-text);
+  --primary: var(--admin-primary);
+  --primary-foreground: var(--admin-text);
+  --secondary: var(--admin-secondary);
+  --secondary-foreground: var(--admin-text);
+  --muted: var(--admin-muted);
+  --muted-foreground: hsl(var(--admin-text) / 0.7);
+  --accent: var(--admin-accent);
+  --accent-foreground: var(--admin-text);
+  --border: var(--admin-muted);
+  --input: var(--admin-muted);
+  --ring: var(--admin-primary);
+}
+
+.admin-theme {
+  @apply bg-[hsl(var(--admin-background))] text-[hsl(var(--admin-text))];
+}
+
+.admin-theme .bg-background {
+  @apply bg-[hsl(var(--admin-background))];
+}
+
+.admin-theme .bg-card {
+  @apply bg-[hsl(var(--admin-card))];
+}
+
+.admin-theme .text-foreground {
+  @apply text-[hsl(var(--admin-text))];
+}
+
+.admin-theme .border-border {
+  @apply border-[hsl(var(--admin-muted))];
+}
+
+.admin-theme .bg-primary {
+  @apply bg-[hsl(var(--admin-primary))];
+}
+
+.admin-theme .text-primary {
+  @apply text-[hsl(var(--admin-primary))];
+}
+
+.admin-theme .bg-secondary {
+  @apply bg-[hsl(var(--admin-secondary))];
+}
+
+.admin-theme .bg-muted {
+  @apply bg-[hsl(var(--admin-muted))];
+}
+
+.admin-theme .text-muted-foreground {
+  @apply text-[hsl(var(--admin-text))/0.7];
+}
+
+/* Food category badges */
+.category-badge-veg {
+  @apply bg-[hsl(var(--veg)/0.2)] text-[hsl(var(--veg))];
+}
+
+.category-badge-nonveg {
+  @apply bg-[hsl(var(--nonveg)/0.2)] text-[hsl(var(--nonveg))];
+}
+
+.category-badge-beverage {
+  @apply bg-[hsl(var(--beverage)/0.2)] text-[hsl(var(--beverage))];
+}
+
+.category-badge-dessert {
+  @apply bg-[hsl(var(--dessert)/0.2)] text-[hsl(var(--dessert))];
+}
+
+/* Card hover effects */
+.food-card {
+  @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+}
+
+/* Gradient backgrounds */
+.auth-gradient {
+  background: linear-gradient(135deg, hsl(221.2, 83.2%, 53.3%), hsl(262, 83%, 58%));
+}
+
+.admin-gradient {
+  background: linear-gradient(135deg, hsl(262, 83%, 58%), hsl(291, 64%, 42%));
+}
+
+/* Food emoji container */
+.food-emoji-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+.food-emoji {
+  position: absolute;
+  font-size: 3rem;
+  opacity: 0.8;
+}
+
+/* Shimmer effect for loading states */
+.shimmer {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Cart item animations */
+.cart-item-enter {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.cart-item-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.cart-item-exit {
+  opacity: 1;
+}
+
+.cart-item-exit-active {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Responsive table for mobile */
+@media (max-width: 640px) {
+  .responsive-table {
+    @apply block;
+  }
+
+  .responsive-table thead {
+    @apply hidden;
+  }
+
+  .responsive-table tbody {
+    @apply block;
+  }
+
+  .responsive-table tr {
+    @apply block border rounded-lg mb-4 p-4;
+  }
+
+  .responsive-table td {
+    @apply block text-right pl-4 py-2 relative;
+  }
+
+  .responsive-table td::before {
+    content: attr(data-label);
+    @apply absolute left-0 text-sm font-medium text-muted-foreground;
+  }
+}
