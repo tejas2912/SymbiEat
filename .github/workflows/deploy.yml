@@ -2,19 +2,17 @@ name: Deploy to EC2
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Deploy to EC2 via SSH
+      - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -22,6 +20,15 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ec2-user/SymbiEat
+
+            echo "🔄 Pulling latest code from GitHub..."
             git pull origin main
+
+            echo "📦 Installing dependencies..."
             npm install
-            pm2 restart app || pm2 start npm --name "app" -- run start
+
+            echo "🛠️ Building the app..."
+            npm run build
+
+            echo "🚀 Restarting app with PM2..."
+            pm2 restart app || pm2 start npm --name "app" -- start --update-env
