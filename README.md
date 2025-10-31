@@ -17,6 +17,8 @@ SimbiEat is a comprehensive food ordering platform designed specifically for hos
 ### Prerequisites
 
 - Node.js 16.x or higher
+
+
 - MongoDB (local or Atlas)
 
 ### Installation
