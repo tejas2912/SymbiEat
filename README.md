@@ -2,6 +2,8 @@
 
 SimbiEat is a comprehensive food ordering platform designed specifically for hostel canteens. It allows students to browse menus, place orders, and track deliveries, while providing canteen administrators with tools to manage food items, track orders, and analyze sales.
 
+
+sale
 ## Features
 
 - **User Authentication**: Secure login and registration system
